@@ -39,9 +39,9 @@ async function generate(tlp) {
     .replace(/{{start_date}}/g, tlp.start_date || '')
     .replace(/{{company_description}}/g, tlp.company_description || '')
     .replace(/{{job_description}}/g, tlp.job_description || '')
-    .replace(/{{company_logo_url}}/g, tlp.company_logo_url || '')
+    .replace(/{{company_logo_url}}/g, proxyImageUrl(tlp.company_logo_url || ''))
     .replace(/{{company_website_url}}/g, tlp.company_website_url || '#')
-    .replace(/{{hero_image_url}}/g, tlp.hero_image_url || '')
+    .replace(/{{hero_image_url}}/g, proxyImageUrl(tlp.hero_image_url || ''))
     .replace(/{{highlight_1}}/g, escapeHtml(tlp.highlight_1 || ''))
     .replace(/{{highlight_2}}/g, escapeHtml(tlp.highlight_2 || ''))
     .replace(/{{highlight_3}}/g, escapeHtml(tlp.highlight_3 || ''))
@@ -180,6 +180,19 @@ function escapeHtml(text) {
     "'": '&#039;'
   };
   return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+
+/**
+ * Convert external image URL to proxied URL to avoid hotlinking blocks
+ */
+function proxyImageUrl(url) {
+  if (!url) return '';
+  // Only proxy external URLs (http/https)
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+  }
+  // Already relative or data-uri, return as-is
+  return url;
 }
 
 /**
@@ -589,7 +602,7 @@ function getMinimalTemplate() {
   {{#company_logo_url}}
   <div class="top-bar">
     <div class="container">
-      <img src="{{company_logo_url}}" alt="{{company_name}}" class="top-bar-logo">
+      <img src="{{company_logo_url}}" alt="{{company_name}}" class="top-bar-logo" onerror="this.style.display='none'">
     </div>
   </div>
   {{/company_logo_url}}
@@ -606,7 +619,7 @@ function getMinimalTemplate() {
     </div>
     {{#hero_image_url}}
     <div class="hero-image">
-      <img src="{{hero_image_url}}" alt="Life at {{company_name}}">
+      <img src="{{hero_image_url}}" alt="Life at {{company_name}}" onerror="this.parentElement.style.display='none'">
     </div>
     {{/hero_image_url}}
   </div>

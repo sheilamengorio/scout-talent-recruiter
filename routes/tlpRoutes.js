@@ -569,4 +569,67 @@ router.post('/:id/export', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/image-proxy
+ * Proxy external images to avoid hotlinking blocks
+ * Usage: /api/image-proxy?url=<encoded-url>
+ */
+const imageCache = new Map();
+const IMAGE_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+router.get('/image-proxy', async (req, res) => {
+  try {
+    const imageUrl = req.query.url;
+    if (!imageUrl) {
+      return res.status(400).send('Missing url parameter');
+    }
+
+    // Validate URL
+    try {
+      new URL(imageUrl);
+    } catch {
+      return res.status(400).send('Invalid URL');
+    }
+
+    // Check cache
+    const cached = imageCache.get(imageUrl);
+    if (cached && (Date.now() - cached.timestamp) < IMAGE_CACHE_TTL) {
+      res.setHeader('Content-Type', cached.contentType);
+      res.setHeader('Cache-Control', 'public, max-age=1800');
+      return res.send(cached.data);
+    }
+
+    // Fetch the image from the external server
+    const axios = require('axios');
+    const response = await axios.get(imageUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'image/*,*/*'
+      },
+      responseType: 'arraybuffer',
+      timeout: 10000,
+      maxRedirects: 5
+    });
+
+    const contentType = response.headers['content-type'] || 'image/jpeg';
+    const data = Buffer.from(response.data);
+
+    // Cache it (limit cache to 50 images, ~50MB max)
+    if (imageCache.size > 50) {
+      // Remove oldest entry
+      const oldestKey = imageCache.keys().next().value;
+      imageCache.delete(oldestKey);
+    }
+    imageCache.set(imageUrl, { data, contentType, timestamp: Date.now() });
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=1800');
+    res.send(data);
+
+  } catch (error) {
+    console.error('[Image Proxy] Error:', error.message);
+    res.status(404).send('Image not found');
+  }
+});
+
 module.exports = router;
