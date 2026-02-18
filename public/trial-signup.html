@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Your Scout Talent Trial</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .signup-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 48px;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-section h1 {
+      font-size: 2em;
+      color: #667eea;
+      margin-bottom: 8px;
+    }
+
+    .logo-section p {
+      color: #666;
+      font-size: 1.1em;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 500;
+      font-size: 0.95em;
+    }
+
+    label .required {
+      color: #e74c3c;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .benefits {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .benefits h3 {
+      color: #333;
+      margin-bottom: 12px;
+      font-size: 1.1em;
+    }
+
+    .benefits ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .benefits li {
+      padding: 6px 0;
+      color: #666;
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .benefits li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9em;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .success-message {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .signup-container {
+        padding: 32px 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="logo-section">
+      <h1>Scout Talent Essentials</h1>
+      <p>Start your 14-day free trial</p>
+    </div>
+
+    <div class="benefits">
+      <h3>What's included in your trial:</h3>
+      <ul>
+        <li>Deploy job ads to Seek automatically</li>
+        <li>AI-powered candidate screening</li>
+        <li>Full ATS capabilities</li>
+        <li>Unlimited job postings</li>
+        <li>No credit card required</li>
+      </ul>
+    </div>
+
+    <div class="success-message" id="successMessage">
+      Thank you! Your trial account has been created. Check your email for next steps.
+    </div>
+
+    <form id="trialSignupForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="required">*</span></label>
+          <input type="text" id="firstName" name="firstName" required>
+          <div class="error-message" id="firstNameError">Please enter your first name</div>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name <span class="required">*</span></label>
+          <input type="text" id="lastName" name="lastName" required>
+          <div class="error-message" id="lastNameError">Please enter your last name</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Job Title <span class="required">*</span></label>
+        <input type="text" id="jobTitle" name="jobTitle" required placeholder="e.g., Talent Acquisition Manager">
+        <div class="error-message" id="jobTitleError">Please enter your job title</div>
+      </div>
+
+      <div class="form-group">
+        <label>Work Email <span class="required">*</span></label>
+        <input type="email" id="workEmail" name="workEmail" required placeholder="you@company.com">
+        <div class="error-message" id="workEmailError">Please enter a valid work email (no gmail, yahoo, etc.)</div>
+      </div>
+
+      <div class="form-group">
+        <label>Company Name <span class="required">*</span></label>
+        <input type="text" id="companyName" name="companyName" required>
+        <div class="error-message" id="companyNameError">Please enter your company name</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Number of Employees <span class="required">*</span></label>
+          <select id="employeeCount" name="employeeCount" required>
+            <option value="">Select...</option>
+            <option value="1-10">1-10</option>
+            <option value="11-50">11-50</option>
+            <option value="51-200">51-200</option>
+            <option value="201-500">201-500</option>
+            <option value="501-1000">501-1000</option>
+            <option value="1000+">1000+</option>
+          </select>
+          <div class="error-message" id="employeeCountError">Please select company size</div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone <span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone" required placeholder="+61 400 000 000">
+          <div class="error-message" id="phoneError">Please enter your phone number</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Country/Region <span class="required">*</span></label>
+        <select id="country" name="country" required>
+          <option value="">Select...</option>
+          <option value="Australia">Australia</option>
+          <option value="New Zealand">New Zealand</option>
+          <option value="Singapore">Singapore</option>
+          <option value="United Kingdom">United Kingdom</option>
+          <option value="United States">United States</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="error-message" id="countryError">Please select your country</div>
+      </div>
+
+      <div class="form-group">
+        <label>Reason for Trial <span class="required">*</span></label>
+        <select id="trialReason" name="trialReason" required>
+          <option value="Deploy ads from recruiter.scouttalent.ai">Deploy ads from recruiter.scouttalent.ai</option>
+          <option value="I'd like to try AI features">I'd like to try AI features</option>
+          <option value="I'd like to try ATS">I'd like to try ATS</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Start Free Trial
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('trialSignupForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+
+    // Free email domains to block
+    const freeEmailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'live.com', 'icloud.com'];
+
+    // Validate work email
+    function validateWorkEmail(email) {
+      const domain = email.split('@')[1];
+      return domain && !freeEmailDomains.includes(domain.toLowerCase());
+    }
+
+    // Show error
+    function showError(fieldId, show = true) {
+      const errorEl = document.getElementById(fieldId + 'Error');
+      if (errorEl) {
+        errorEl.style.display = show ? 'block' : 'none';
+      }
+    }
+
+    // Validate on blur
+    document.getElementById('workEmail').addEventListener('blur', function() {
+      if (this.value && !validateWorkEmail(this.value)) {
+        showError('workEmail');
+      } else {
+        showError('workEmail', false);
+      }
+    });
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Clear all errors
+      document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+      // Validate work email
+      const workEmail = document.getElementById('workEmail').value;
+      if (!validateWorkEmail(workEmail)) {
+        showError('workEmail');
+        return;
+      }
+
+      // Collect form data
+      const formData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        jobTitle: document.getElementById('jobTitle').value,
+        workEmail: workEmail,
+        companyName: document.getElementById('companyName').value,
+        employeeCount: document.getElementById('employeeCount').value,
+        phone: document.getElementById('phone').value,
+        country: document.getElementById('country').value,
+        trialReason: document.getElementById('trialReason').value
+      };
+
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating your account...';
+
+      try {
+        // Send to backend
+        const response = await fetch('/api/trial-signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          // Show success message
+          successMessage.style.display = 'block';
+          form.style.display = 'none';
+
+          // Optional: Redirect after 3 seconds
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 3000);
+        } else {
+          throw new Error('Signup failed');
+        }
+      } catch (error) {
+        alert('Something went wrong. Please try again or contact support@scouttalent.com.au');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Start Free Trial';
+      }
+    });
+  </script>
+</body>
+</html>
