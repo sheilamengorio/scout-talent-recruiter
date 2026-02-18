@@ -249,8 +249,11 @@ router.post('/chat', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Chat error:', error);
-    res.status(500).json({ error: 'Failed to process chat message' });
+    console.error('Chat error:', error.message || error);
+    res.status(500).json({
+      error: 'Failed to process chat message',
+      details: error.message || 'Unknown error'
+    });
   }
 });
 

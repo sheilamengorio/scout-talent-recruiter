@@ -462,6 +462,18 @@ app.get('/api/health', async (req, res) => {
 });
 
 /**
+ * Quick diagnostic endpoint
+ */
+app.get('/api/debug', (req, res) => {
+  res.json({
+    openai_key_set: !!process.env.OPENAI_API_KEY,
+    openai_key_prefix: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.substring(0, 7) + '...' : 'NOT SET',
+    node_env: process.env.NODE_ENV || 'not set',
+    port: process.env.PORT || '5000 (default)'
+  });
+});
+
+/**
  * Get system info (for debugging)
  */
 app.get('/api/info', (req, res) => {
