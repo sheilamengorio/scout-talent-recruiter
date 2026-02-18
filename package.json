@@ -1,0 +1,27 @@
+{
+  "name": "scout-talent-recruiter",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.5",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsforce": "^1.11.0",
+    "mongoose": "^9.1.5",
+    "multer": "^2.0.2",
+    "node-cache": "^5.1.2",
+    "nodemon": "^3.1.11",
+    "openai": "^4.0.0",
+    "robots-parser": "^3.0.1"
+  },
+  "keywords": [],
+  "description": ""
+}

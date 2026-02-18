@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e:*)",
+      "Bash(npx vite build:*)",
+      "Bash(timeout 8 node:*)",
+      "Bash(lsof:*)",
+      "Bash(chmod:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(sudo npm install:*)",
+      "Bash(npx @railway/cli:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nScout Talent TLP Generator - ready for deployment\n\nFull-featured recruitment marketing tool with:\n- AI-powered conversational TLP creation \\(GPT-4o-mini\\)\n- Website brand scraping \\(colors, fonts, logo, hero images\\)\n- SEEK market research integration\n- Multi-page scraping \\(career + about pages\\)\n- Brand voice analysis with structured tone profiles\n- Candidate psychology framework for targeted copy\n- High-conversion template with highlights bar and multiple CTAs\n- Interview question generation\n- Deployment recommendations\n- HTML export\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
